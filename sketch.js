@@ -2,11 +2,14 @@ var tiorelx, fugindo;
 var terra;
 var imagempiso
 var seivoar
+var nuvemcomrandolice
+var imagemnuvem
 
 function preload(){
     fugindo = loadAnimation("trex1.png","trex3.png","trex4.png");
 
-    imagempiso=loadImage("ground2.png")
+    imagempiso=loadImage("ground2.png");
+    imagemnuvem=loadImage("cloud.png");
 }
 function setup(){
     createCanvas(1200,400);
@@ -28,7 +31,7 @@ function setup(){
     console.log(aleatorio);
 }
 function draw(){
-    background("lightgrey");
+    background("darkgrey");
 
 //console.log(tiorelx.y);
 
@@ -45,11 +48,20 @@ function draw(){
 
     tiorelx.collide(seivoar);
 
-    numvemrandom();
+    nuvemrandom();
 
   drawSprites();
 }
 
 function nuvemrandom(){
 
+if(frameCount%120===0){
+  nuvemcomrandolice=createSprite(1200,200,80,20);
+  nuvemcomrandolice.addImage(imagemnuvem);
+  nuvemcomrandolice.y=Math.round(random(10,300));
+  nuvemcomrandolice.velocityX=-3;
+  nuvemcomrandolice.depth=tiorelx.depth;
+  tiorelx.depth+=1;
+  nuvemcomrandolice.lifetime = 450;
+}
 }
