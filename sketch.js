@@ -17,10 +17,11 @@ var inicio = 0;
 var jogando = 1;
 var derrotado = 2;
 var estado = inicio;
+var descanso;
 
 function preload(){
     fugindo = loadAnimation("trex1.png","trex3.png","trex4.png");
-
+    descanso=loadAnimation("trex1.png");
     imagempiso=loadImage("ground2.png");
     cactea1=loadImage("obstacle1.png");
     cactea2=loadImage("obstacle2.png");
@@ -45,6 +46,7 @@ tentativascomacerto=0
     seivoar.visible=false;
 
     tiorelx = createSprite(100,320,40,100);
+    tiorelx.addAnimation("descanso",descanso);
     tiorelx.addAnimation("fugindo",fugindo);
 
     var aleatorio = Math.round(random(1,100));
@@ -52,6 +54,9 @@ tentativascomacerto=0
 
     algodao = new Group();
     cacturne = new Group();
+
+    tiorelx.debug = false;
+    tiorelx.setCollider("circle",0,0,40);
 }
 function draw(){
     background("darkgrey");
@@ -65,34 +70,43 @@ function draw(){
     estado = jogando;
   }
   else if(estado === jogando){
+    tiorelx.changeAnimation("fugindo",fugindo);
     if(keyDown("space")&&tiorelx.y>=300){
 
       tiorelx.velocityY = -28;
     }
-    terra.velocityX=-4;
+    terra.velocityX=-8;
+    tiorelx.velocityY = tiorelx.velocityY + 2;
+
+
+    if(terra.x<0){
+
+      terra.x=terra.width/2};
+      nuvemrandom();
+      meteoro();
+      tentativascomacerto+=Math.round(frameCount/60);
+      if(cacturne.isTouching(tiorelx)){
+        estado=derrotado;
+
+      }
+      
   }
 
   else if(estado === derrotado){
-
+      terra.velocityX=0;
+      algodao.setVelocityXEach(0);
+      cacturne.setVelocityXEach(0);
   }
 
   
-    tiorelx.velocityY = tiorelx.velocityY + 2;
    
-
-  if(terra.x<0){
-
-    terra.x=terra.width/2};
-
     tiorelx.collide(seivoar);
 
-    nuvemrandom();
-    meteoro();
-
+   
     drawSprites();
     textSize(24);
     text("record="+tentativascomacerto,1000,50);
-tentativascomacerto+=Math.round(frameCount/60);
+
 }
 
   function nuvemrandom(){
@@ -101,7 +115,7 @@ tentativascomacerto+=Math.round(frameCount/60);
   nuvemcomrandolice=createSprite(1200,200,80,20);
   nuvemcomrandolice.addImage(imagemnuvem);
   nuvemcomrandolice.y=Math.round(random(10,300));
-  nuvemcomrandolice.velocityX=-3;
+  nuvemcomrandolice.velocityX=-6;
   nuvemcomrandolice.depth=tiorelx.depth;
   tiorelx.depth+=1;
   nuvemcomrandolice.lifetime = 450;
@@ -112,7 +126,7 @@ tentativascomacerto+=Math.round(frameCount/60);
   function meteoro(){
   if(frameCount%120===0){
  var cactea=createSprite(1200,330,20,80);
- cactea.velocityX=-6
+ cactea.velocityX=-12;
  var imagecactea=Math.round(random(1,6))
  switch (imagecactea) {
    case 1:cactea.addImage(cactea1);
