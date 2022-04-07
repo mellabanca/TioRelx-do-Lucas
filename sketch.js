@@ -18,6 +18,12 @@ var jogando = 1;
 var derrotado = 2;
 var estado = inicio;
 var descanso;
+var meespetei;
+var fraseperdeu;
+var imagemperdeu;
+var fraserecomecar;
+var imagemvoltei;
+var avisoquepulei;
 
 function preload(){
     fugindo = loadAnimation("trex1.png","trex3.png","trex4.png");
@@ -29,15 +35,22 @@ function preload(){
     cactea4=loadImage("obstacle4.png");
     cactea5=loadImage("obstacle5.png");
     cactea6=loadImage("obstacle6.png");
+    imagemperdeu=loadImage("gameOver.png");
+    imagemvoltei=loadImage("restart.png");
 
     imagemnuvem=loadImage("cloud.png");
+    meespetei=loadAnimation("trex_collided.png");
+
+    avisoquepulei = loadSound("jump.mp3");    
 }
 function setup(){
     createCanvas(1200,400);
-tentativascomacerto=0
-    
+    tentativascomacerto=0
+    fraseperdeu=createSprite(600,200);
+    fraseperdeu.addImage(imagemperdeu);
     borda = createEdgeSprites();
-
+    fraserecomecar=createSprite(600,280);
+    fraserecomecar.addImage(imagemvoltei);
     terra=createSprite(400,360,800,40);
     terra.addImage(imagempiso);
     terra.x=terra.width/2
@@ -47,6 +60,7 @@ tentativascomacerto=0
 
     tiorelx = createSprite(100,320,40,100);
     tiorelx.addAnimation("descanso",descanso);
+    tiorelx.addAnimation("machucado",meespetei);
     tiorelx.addAnimation("fugindo",fugindo);
 
     var aleatorio = Math.round(random(1,100));
@@ -64,6 +78,8 @@ function draw(){
 
     if(estado === inicio){
       terra.velocityX=0;
+      fraseperdeu.visible=false;
+      fraserecomecar.visible=false;
     }
 
   if(estado === inicio && keyDown("space")){
@@ -72,12 +88,13 @@ function draw(){
   else if(estado === jogando){
     tiorelx.changeAnimation("fugindo",fugindo);
     if(keyDown("space")&&tiorelx.y>=300){
-
+      avisoquepulei.play();
       tiorelx.velocityY = -28;
     }
     terra.velocityX=-8;
     tiorelx.velocityY = tiorelx.velocityY + 2;
-
+    fraseperdeu.visible=false;
+    fraserecomecar.visible=false;
 
     if(terra.x<0){
 
@@ -96,6 +113,12 @@ function draw(){
       terra.velocityX=0;
       algodao.setVelocityXEach(0);
       cacturne.setVelocityXEach(0);
+      tiorelx.changeAnimation("machucado",meespetei);
+      algodao.setLifetimeEach(-12);
+      cacturne.setLifetimeEach(-10);
+      tiorelx.velocityY=0
+      fraseperdeu.visible=true;
+      fraserecomecar.visible=true; 
   }
 
   
