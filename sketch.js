@@ -110,7 +110,7 @@ function draw(){
       terra.x=terra.width/2};
       nuvemrandom();
       meteoro();
-      tentativascomacerto+=Math.round(frameCount/60);
+      tentativascomacerto+=Math.round(frameRate()/60);
       if(cacturne.isTouching(tiorelx)){
         estado=derrotado;
       f.play();
@@ -128,12 +128,12 @@ function draw(){
       tiorelx.velocityY=0
       fraseperdeu.visible=true;
       fraserecomecar.visible=true; 
-
+      if(mousePressedOver(fraserecomecar)){
+        resetar();
+      }
   }
 
-    if(mousePressedOver(fraserecomecar)){
-      resetar();
-    }
+   
    
     tiorelx.collide(seivoar);
 
@@ -145,7 +145,10 @@ function draw(){
 }
 
   function resetar(){
-    
+    estado=jogando;
+   algodao.destroyEach();
+   cacturne.destroyEach();
+   tentativascomacerto=0;
   }
 
   function nuvemrandom(){
@@ -157,6 +160,10 @@ function draw(){
   nuvemcomrandolice.velocityX=-6;
   nuvemcomrandolice.depth=tiorelx.depth;
   tiorelx.depth+=1;
+  nuvemcomrandolice.depth=fraseperdeu.depth;
+  fraseperdeu.depth+=1;
+  nuvemcomrandolice.depth=fraserecomecar.depth;
+  fraserecomecar.depth+=1;
   nuvemcomrandolice.lifetime = 450;
 
   algodao.add(nuvemcomrandolice);
