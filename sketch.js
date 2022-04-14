@@ -47,21 +47,21 @@ function preload(){
     avisoquepulei = loadSound("jump.mp3");    
 }
 function setup(){
-    createCanvas(1200,400);
+    createCanvas(windowWidth,windowHeight);
     tentativascomacerto=0
-    fraseperdeu=createSprite(600,200);
+    fraseperdeu=createSprite(width/2,height/2-50);
     fraseperdeu.addImage(imagemperdeu);
     borda = createEdgeSprites();
-    fraserecomecar=createSprite(600,280);
+    fraserecomecar=createSprite(width/2,height/2);
     fraserecomecar.addImage(imagemvoltei);
-    terra=createSprite(400,360,800,40);
+    terra=createSprite(width/2,height-80,width,125);
     terra.addImage(imagempiso);
     terra.x=terra.width/2
 
-    seivoar=createSprite(400,380,800,20);
+    seivoar=createSprite(width/2,height-10,width,125);
     seivoar.visible=false;
 
-    tiorelx = createSprite(100,320,40,100);
+    tiorelx = createSprite(100,height-70,40,100);
     tiorelx.addAnimation("descanso",descanso);
     tiorelx.addAnimation("machucado",meespetei);
     tiorelx.addAnimation("fugindo",fugindo);
@@ -89,14 +89,16 @@ function draw(){
       fraserecomecar.visible=false;
     }
 
-  if(estado === inicio && keyDown("space")){
+  if(estado === inicio && keyDown("space") || touches.length > 0 && estado === inicio){
     estado = jogando;
+    touches = [];
   }
   else if(estado === jogando){
     tiorelx.changeAnimation("fugindo",fugindo);
-    if(keyDown("space")&&tiorelx.y>=300){
+    if(keyDown("space")&&tiorelx.y>=height-300 || touches.length > 0 && tiorelx.y>=height-300){
       avisoquepulei.play();
       tiorelx.velocityY = -28;
+      touches = [];
     }
     terra.velocityX=-(8+tentativascomacerto/200);
     tiorelx.velocityY = tiorelx.velocityY + 2;
@@ -128,8 +130,9 @@ function draw(){
       tiorelx.velocityY=0
       fraseperdeu.visible=true;
       fraserecomecar.visible=true; 
-      if(mousePressedOver(fraserecomecar)){
+      if(mousePressedOver(fraserecomecar) || touches.length > 0){
         resetar();
+        touches = [];
       }
   }
 
@@ -140,7 +143,7 @@ function draw(){
    
     drawSprites();
     textSize(24);
-    text("record="+tentativascomacerto,1000,50);
+    text("record="+tentativascomacerto,width-150,height-300);
 
 }
 
@@ -154,9 +157,9 @@ function draw(){
   function nuvemrandom(){
 
   if(frameCount%120===0){
-  nuvemcomrandolice=createSprite(1200,200,80,20);
+  nuvemcomrandolice=createSprite(width+20,height-300,80,20);
   nuvemcomrandolice.addImage(imagemnuvem);
-  nuvemcomrandolice.y=Math.round(random(10,300));
+  nuvemcomrandolice.y=Math.round(random(10,height/2));
   nuvemcomrandolice.velocityX=-6;
   nuvemcomrandolice.depth=tiorelx.depth;
   tiorelx.depth+=1;
@@ -171,7 +174,7 @@ function draw(){
 }
   function meteoro(){
   if(frameCount%120===0){
- var cactea=createSprite(1200,330,20,80);
+ var cactea=createSprite(width,height-95,20,80);
  cactea.velocityX=-(12+tentativascomacerto/200);
  var imagecactea=Math.round(random(1,6))
  switch (imagecactea) {
