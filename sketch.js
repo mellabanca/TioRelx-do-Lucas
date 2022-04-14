@@ -95,7 +95,7 @@ function draw(){
   }
   else if(estado === jogando){
     tiorelx.changeAnimation("fugindo",fugindo);
-    if(keyDown("space")&&tiorelx.y>=height-300 || touches.length > 0 && tiorelx.y>=height-300){
+    if(keyDown("space")&&tiorelx.y>=height-150 || touches.length > 0 && tiorelx.y>=height-130){
       avisoquepulei.play();
       tiorelx.velocityY = -28;
       touches = [];
@@ -143,7 +143,7 @@ function draw(){
    
     drawSprites();
     textSize(24);
-    text("record="+tentativascomacerto,width-150,height-300);
+    text("record="+tentativascomacerto,width-150,height/2-250);
 
 }
 
